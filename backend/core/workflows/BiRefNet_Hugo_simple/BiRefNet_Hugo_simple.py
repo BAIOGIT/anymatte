@@ -34,13 +34,16 @@ def BiRefNet_Hugo_simple(video, processed_path):
     return workflow
 
 def main(video_path):
-    processed_path = '/home/swell/git/msaas/anymatte/backend/anymatte/media/processed'
-    folder_path = create_folder(video_path, processed_path)
-    metadata = get_metadata(video_path, folder_path)
-    
-    workflow = BiRefNet_Hugo_simple(video_path, folder_path)
+    try:
+        processed_path = '/home/swell/git/msaas/anymatte/backend/anymatte/media/processed'
+        folder_path = create_folder(video_path, processed_path)
+        metadata = get_metadata(video_path, folder_path)
+        
+        workflow = BiRefNet_Hugo_simple(video_path, folder_path)
 
-    queue_workflow(url, workflow)
+        queue_workflow(url, workflow)
+    except Exception as e:
+        print(f'Workflow error: {e}')
     
     clear_memory(url)
 
