@@ -5,7 +5,7 @@ stripe_create_price.sh
 env/
 backend/api.anymatte.com.key
 backend/api.anymatte.com.crt
-backend/anymatte/db.sqlite3
+backend/anymatte/db*
 backend/anymatte/anymatte/settings.py
 backend/anymatte/media/
 frontend/node_modules/
