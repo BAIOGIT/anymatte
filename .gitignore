@@ -1,0 +1,12 @@
+README.md
+server_sync.sh
+build_sync.sh
+stripe_create_price.sh
+env/
+backend/api.anymatte.com.key
+backend/api.anymatte.com.crt
+backend/anymatte/anymatte/settings.py
+backend/anymatte/media/
+frontend/node_modules/
+frontend/build/
+frontend/.env/

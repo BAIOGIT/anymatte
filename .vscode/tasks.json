@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "tasks": [
+        {
+            "label": "Run ComfyUI",
+            "type": "shell",
+            "request": "launch",
+            "command": "/media/swell/ed21ddf0-f250-436d-a05f-db8a659b7a20/run_comfyui.sh",
+            "args": [],
+            "console": "integratedTerminal",
+            "runtimeExecutable": "/bin/bash",
+            "problemMatcher": []
+        }
+    ]
+}

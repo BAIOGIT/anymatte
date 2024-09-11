@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Automatic Close</title>
+    <script>
+        window.onload = function() {
+            // Delay the closing to allow the page to fully load
+            setTimeout(function() {
+                if (window.opener) {
+                    window.close();
+                } else {
+                    console.warn('This window was not opened by JavaScript and cannot be closed programmatically.');
+                }
+            }, 100); // Delay of 100 milliseconds
+        };
+    </script>
+</head>
+<body>
+    <p>If this page doesn\'t close automatically, it might be due to browser restrictions.</p>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Backend",
+            "type": "debugpy",
+            "request": "launch",
+            "args": [
+                "runserver",
+                "0.0.0.0:9777"
+            ],
+            "django": true,
+            "autoStartBrowser": true,
+            "program": "${workspaceFolder}/backend/anymatte/manage.py",
+            "pythonPath": "${workspaceFolder}/env/anymatte/bin/python"
+        },
+        {
+            "name": "Python Debugger: Backend Celery Worker",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/env/anymatte/bin/celery",
+            "args": [
+                "-A",
+                "anymatte",
+                "worker",
+                "-Q",
+                "process",
+                "--loglevel=info"
+            ],
+            "django": true,
+            "console": "integratedTerminal",
+            "env": {
+                "DJANGO_SETTINGS_MODULE": "anymatte.settings"  // Replace with your actual Django settings module
+            },
+            "pythonPath": "${workspaceFolder}/env/anymatte/bin/python",
+            "cwd": "${workspaceFolder}/backend/anymatte"  // Replace with the path to where y
+        },
+        {
+            "name": "NPM Debugger: Frontend",
+            "command": "npm start",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/frontend",
+            "autoStartBrowser": true,
+        },
+        {
+            "name": "TailwindCSS compiler: Frontend",
+            "command": "npx tailwindcss -i src/index.css -o src/output.css --watch",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/frontend"
+        },
+        // {
+        //     "name": "Python & Frontend",
+        //     "type": "compound",
+        //     "configurations": [
+        //         "Python Debugger: Backend",
+        //         "NPM Debugger: Frontend"
+        //     ]
+        // }
+    ]
+}

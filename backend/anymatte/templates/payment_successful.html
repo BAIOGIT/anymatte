@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Successful</title>
+    <script>
+        window.onload = function() {
+            // Attempt to close the tab
+            if (window.opener) {
+                window.close();
+            } else {
+                console.warn('This window was not opened by JavaScript and cannot be closed programmatically.');
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Payment Successful!</h1>
+    <p>Your payment was successful. You can now close this tab.</p>
+</body>
+</html>
