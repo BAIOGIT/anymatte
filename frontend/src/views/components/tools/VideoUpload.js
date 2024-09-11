@@ -414,8 +414,8 @@ const VideoUpload = () => {
               <CheckUploadPermission />
 
               <div className="flex flex-col items-center mt-4">
-                <h1 className="text-2xl font-semibold mt-6 text-center">Upload your video</h1>
-                <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2 animate-pulse">Proceed to remove black frames.</span>
+                <h1 className="text-2xl font-semibold mt-6 text-center">Upload your content</h1>
+                <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2 animate-pulse">Proceed to generate your matte.</span>
 
                 <form onSubmit={handleSubmit} className="flex flex-col items-center w-full">
                   <label htmlFor="file-upload" className="flex flex-col items-center cursor-pointer my-2 mt-3">

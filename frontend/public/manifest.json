@@ -1,6 +1,6 @@
 {
-  "short_name": "Remove Black Frames",
-  "name": "Remove Black Frames. ANY Resolution. ANY Codec.",
+  "short_name": "AnyMatte",
+  "name": "AnyMatte. Unmatched alpha matte generation.",
   "icons": [
     {
       "src": "favicon.ico",

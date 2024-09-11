@@ -1,14 +1,15 @@
 export const footerHeadings = {
     companyInfo: {
-        title: "Any Matte",
-        description: "Expert Solutions for Flawless Video Rendering.",
+        title: "AnyMatte",
+        description: "Unmatched alpha matte generation.",
     },
     contact: {
         title: "Contact Us",
         contacts: [
-            { name: "Email", value: "support@anymatte.com" },
-            { name: "Phone", value: "+1 234 567 8901" },
-            { name: "Address", value: "1234 Film Street, Hollywood, CA 90001, USA" },
+            { name: "", value: "hello@anymatte.com" },
+            // { name: "Email:", value: "hello@anymatte.com" },
+            // { name: "Phone:", value: "+1 234 567 8901" },
+            // { name: "Address:", value: "1234 Film Street, Hollywood, CA 90001, USA" },
         ],
     },
     quickLinks: {
@@ -46,7 +47,7 @@ export const componentsHeadings = {
         icon1: "fas fa-image",
         title1: "Comprehensive Matte Creation",
         subtitle1: "Specializing in various types of footage, we deliver accurate alpha mattes tailored to your needs, from faces to vehicles and beyond.",
-        icon2: "fas fa-speedometer",
+        icon2: "fas fa-bolt",
         title2: "Rapid Processing",
         subtitle2: "Receive your alpha matte files swiftly without sacrificing quality, even when time is of the essence.",
         icon3: "fas fa-tags",
