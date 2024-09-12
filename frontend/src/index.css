@@ -138,3 +138,37 @@ select option:checked {
 .ui-list-item:nth-child(4) {
   animation-delay: 0.3s;
 }
+
+
+.swiper-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 5%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.7), transparent);
+  z-index: 10;
+}
+
+.swiper-overlay-left {
+  left: 0;
+}
+
+.swiper-overlay-right {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.7), transparent);
+}
+
+.swiper-button-next, .swiper-button-prev {
+  color: #000; /* Adjust color as needed */
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+  border-radius: 50%; /* Circular buttons */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-button-next:after, .swiper-button-prev:after {
+  font-size: 20px; /* Adjust icon size as needed */
+}

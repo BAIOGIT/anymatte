@@ -5,13 +5,20 @@ import os
 
 url = "http://127.0.0.1:8188"
 
-def queue_workflow(url, workflow):
+def queue_workflow(url, workflow, export_path):
     # Load workflow into comfyui
     p = {"prompt": workflow}
     data = json.dumps(p).encode("utf-8")
     print(data)
-    r = requests.post(url=f"{url}/prompt", data=data)
-    return
+    response = requests.post(url=f"{url}/prompt", data=data)
+    if response.status_code == 200:
+        # job_id = response.json().get("job_id")
+        with open(f"{export_path}/job_id.json", "w") as f:
+            json.dump(response.json(), f)
+            # print(f"Job submitted successfully. Job ID: {job_id}")
+            # return job_id  # Assuming job_id is returned in the response
+    else:
+        raise Exception(f"Failed to submit job: {response.text}")
 
 if __name__ == '__main__':
     processed_path = '/home/swell/git/msaas/anymatte/backend/anymatte/media/processed'
@@ -36,3 +43,4 @@ if __name__ == '__main__':
 
     # Queue workflow into comfyui (already running)
     queue_workflow(url, workflow)
+

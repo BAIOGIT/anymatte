@@ -4,45 +4,46 @@ import { pricingHeadings } from '../contents'; // Adjust the import path accordi
 import { useDispatch, useSelector } from 'react-redux';
 import { hideAllPanels } from '../../redux/actions';
 
-// Pricing Card Component
 const PricingCard = ({ title, description, price, features }) => {
     return (
-        <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ease-in-out flex flex-col border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform-gpu">
-        {/* Content Area for Title, Description, Price, and Features */}
-        <div className="flex-grow max-h-8">
-            <h3 className="text-2xl font-semibold mb-2 text-center">{title}</h3>
-            <p className="text-gray-600 mb-4 text-center">{description}</p>
-            <div className="text-3xl font-bold text-blue-600 mb-6 text-center">{price}</div>
-            <ul className="mb-6 space-y-2">
-            {features.map((feature, index) => (
-                <li key={index} className="text-gray-700 flex items-center justify-center">
-                <svg
-                    className="w-5 h-5 text-green-500 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                    ></path>
-                </svg>
-                {feature}
-                </li>
-            ))}
-            </ul>
-        </div>
-        
-        {/* Button stays at the bottom */}
-        <button className="w-full px-4 py-3 mt-3 rounded-lg  text-white bg-gradient-to-br from-palette-gradientPrimary to-palette-gradientSecondary  hover:from-palette-gradientSecondary hover:to-palette-gradientSecondary focus:outline-none transition-colors font-semibold hover:text-white">
-            Select Plan
-        </button>
+        <div className=" bg-lightTheme-primary dark:bg-darkTheme-primary shadow-lg rounded-lg p-4 lg:p-6 border-[1px] border-lightTheme-separator dark:border-darkTheme-separator hover:shadow-xl transition-shadow duration-300 ease-in-out flex flex-col justify-between dark:border-gray-700 transform-gpu max-h-[40vh] md:max-h-[60vh]">
+            {/* Content Area for Title, Description, Price, and Features */}
+            <div className="flex-grow">
+                <h3 className="text-lg lg:text-2xl font-semibold mb-2 text-center">{title}</h3>
+                <p className="text-black dark:text-white mb-4 lg:mb-6 text-sm lg:text-base text-center">{description}</p>
+                <div className="text-2xl lg:text-3xl font-bold text-black dark:text-white mb-4 lg:mb-6 text-center">{price}</div>
+                <ul className="mb-4 lg:mb-6 space-y-1 lg:space-y-2">
+                    {features.map((feature, index) => (
+                        <li key={index} className="text-black dark:text-white flex items-center justify-center text-sm lg:text-base">
+                            <svg
+                                className="w-4 h-4 lg:w-5 lg:h-5 text-green-500 mr-1 lg:mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M5 13l4 4L19 7"
+                                ></path>
+                            </svg>
+                            {feature}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Button stays at the bottom */}
+            <button className="w-full px-3 py-2 lg:px-4 lg:py-3 mt-auto rounded-lg text-white bg-gradient-to-br from-palette-gradientPrimary to-palette-gradientSecondary hover:from-palette-gradientSecondary hover:to-palette-gradientSecondary focus:outline-none transition-colors font-semibold hover:text-white">
+                Select Plan
+            </button>
         </div>
     );
 };
+
+
 
 // Main Pricing Component
 const Pricing = () => {
@@ -77,7 +78,7 @@ const Pricing = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen min-w-screen px-2">
+        <div className="flex items-center justify-center min-h-screen min-w-screen px-2 max-h-[60vh] lg:max-h-[50vh]">
             <div className="relative w-full p-8 mx-auto bg-lightTheme-primary dark:bg-darkTheme-primary border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform-gpu">
                 <button
                     onClick={handleClose}
@@ -86,10 +87,10 @@ const Pricing = () => {
                 >
                     &times;
                 </button>
-                <div className="bg-gray-50 py-12 m-12">
+                <div className="m-4">
                     <div className="max-w-6xl mx-auto text-center">
-                        <h2 className="text-4xl font-extrabold text-gray-900 mb-8">Our Pricing Plans</h2>
-                        <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <h2 className="text-4xl font-extrabold text-black dark:text-white mb-8">Our Pricing Plans</h2>
+                        <div className="p-8 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-8">
                         {pricingPlans.map((plan, index) => (
                             <PricingCard
                             key={index}

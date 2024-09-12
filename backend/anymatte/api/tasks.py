@@ -2,6 +2,7 @@ import subprocess
 import os
 import json
 import time
+import requests
 
 import logging
 # Get the Django logger
@@ -55,16 +56,48 @@ def process_upload_task(upload_id, method, args_dict):
             raise Exception(f"Script failed with output: {result.stderr}")
 
         # Assuming the processed upload is saved with the same name but in a different directory
-        processed_upload_path = os.path.join(media_path, upload_path)
+        base_name = os.path.basename(upload_path)
+        name_without_extension = os.path.splitext(base_name)[0]
+        processed_file_path = f'processed/{name_without_extension}/{base_name}'
+        processed_upload_path = os.path.join(media_path, processed_file_path)
         
-        if os.path.exists(processed_upload_path):
-            base_name = os.path.basename(upload_path)
-            name_without_extension = os.path.splitext(base_name)[0]
-            upload.processed_file = f'processed/{name_without_extension}/{base_name}'
-            upload.processed_at = timezone.now()
-            upload.status = 'done'
-        else:
-            raise Exception("Processed upload file not found")
+        # status_file_path = f'processed/{name_without_extension}/status.json'
+        
+        # api_url = "http://localhost:8188"  # ComfyUI API endpoint
+
+        # # Function to get the current job queue
+        # def get_job_queue(api_url):
+        #     response = requests.get(f"{api_url}/queue")
+            
+        #     if response.status_code == 200:
+        #         return response.json()  # Returns queue as a list of jobs
+        #     else:
+        #         raise Exception(f"Failed to retrieve job queue: {response.text}")            
+
+        # # Function to find the job position in the queue
+        # def get_job_position(api_url, job_id):
+        #     queue = get_job_queue(api_url)
+            
+        #     # Find the position of the job in the queue (0-indexed, so we add 1)
+        #     for position, job in enumerate(queue):
+        #         if job.get("job_id") == job_id:
+        #             return position + 1  # Return human-readable 1-based position
+            
+        #     return None  # Job not found in queue
+
+        while True:
+            if os.path.exists(processed_upload_path):
+                upload.processed_file = processed_file_path
+                upload.processed_at = timezone.now()
+                upload.status = 'done'
+                break
+            else:
+                # upload.queue_id = get_job_position(api_url, job_id)
+                # logger.info(f'sleeping for 3 seconds')
+                time.sleep(3)
+                # raise Exception("Processed upload file not found")
+
+        logger.info(f'Celery task for upload ID {upload_id} done.')
 
     except Exception as e:
         upload.status = 'failed'

@@ -66,8 +66,10 @@ const BuyCredits = () => {
                 className="flex items-center w-full"
                 onClick={handleSubmit}
                 >                          
-                {/* <i className='fas fa-user mr-2'></i> */}
-                Buy credits
+                    {/* <i className='fas fa-user mr-2'></i> */}
+                    <span className="whitespace-nowrap">
+                        Buy credits
+                    </span>
                 </button>
             </div>
 

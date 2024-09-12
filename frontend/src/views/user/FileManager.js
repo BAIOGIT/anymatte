@@ -4,6 +4,8 @@ import jwtDecode from "jwt-decode";
 import CallToActionSection from '../elements/CallToAction';
 import { useTable, useSortBy } from 'react-table';
 
+import Button from '../components/ui/button';
+
 const FileManager = () => {
     const axios = useAxios();
 
@@ -45,14 +47,54 @@ const FileManager = () => {
         }
     }, [user_id, axios, token]);
 
+    const formatDateTime = (datetime) => {
+        const date = new Date(datetime);
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+    };
+
+    const formatFileName = (value) => {
+        return (
+            <div className="font-bold">
+                <span className="font-bold">{value}</span>
+            </div>
+        );
+    };
+
     const ActionCell = ({ value, row }) => {
         const baseUrl = process.env.REACT_APP_DJANGO_IP_REMOTE || '';
         const fullUrl = `https://${baseUrl}:9777/media/${value}`;
     
-        return row.original.paid ? (
-            <a href={fullUrl} download className="text-green-600 dark:text-green-400 hover:underline">Download</a>
-        ) : (
-            <span className="text-red-600 dark:text-red-400">Pay to download</span>
+        return (
+            <>
+                {row.original.status === 'Done' ? (
+                    <Button 
+                        className="w-full text-lightTheme-text font-medium p-2 px-2 rounded hover:bg-darkTheme-primary dark:hover:bg-lightTheme-primary hover:text-darkTheme-text dark:hover:text-lightTheme-text "
+                    >
+                        <a href={fullUrl} download target="_blank" className="">
+                            Download
+                        </a>
+                    </Button>
+                    // <a href={fullUrl} download className="text-green-600 dark:text-green-400 hover:underline">
+                    //     Download
+                    // </a>
+                ) : (
+                    <Button 
+                        disabled
+                        className="w-full opacity-50 text-lightTheme-text font-medium p-2 px-2 rounded"
+                    >
+                        <a className="">
+                            Processing
+                        </a>
+                    </Button>
+                    // <span className="text-red-600 dark:text-red-400">Not ready</span>
+                )}
+            </>
         );
     };
     
@@ -60,15 +102,17 @@ const FileManager = () => {
         {
             Header: 'Uploaded At',
             accessor: 'uploaded_at',
+            Cell: ({ value }) => formatDateTime(value), // Format the datetime value
         },
         {
             Header: 'File Name',
-            accessor: 'file_name', // accessor is the key in the data
+            accessor: 'file_name', // accessor is the key in the data,
+            Cell: ({ value }) => formatFileName(value), // Make the filename bold
         },
-        {
-            Header: 'Status',
-            accessor: 'status',
-        },
+        // {
+        //     Header: 'Status',
+        //     accessor: 'status',
+        // },
         // {
         //     Header: 'Processed At',
         //     accessor: 'processed_at',
@@ -77,13 +121,13 @@ const FileManager = () => {
         //     Header: 'Error Message',
         //     accessor: 'error_message',
         // },
+        // {
+        //     Header: 'Paid',
+        //     accessor: 'paid',
+        //     Cell: ({ value }) => (value ? 'Paid' : 'Not Paid'),
+        // },
         {
-            Header: 'Paid',
-            accessor: 'paid',
-            Cell: ({ value }) => (value ? 'Paid' : 'Not Paid'),
-        },
-        {
-            Header: 'Action',
+            Header: 'Status',
             accessor: 'url',
             Cell: ActionCell,
         },
@@ -131,7 +175,7 @@ const FileManager = () => {
                                     {rows.map(row => {
                                         prepareRow(row);
                                         return (
-                                            <tr {...row.getRowProps()} className="hover:bg-[#cacaca] dark:hover:bg-[#242424]">
+                                            <tr {...row.getRowProps()} className="hover:bg-[#dddddd] dark:hover:bg-[#242424]">
                                                 {row.cells.map(cell => (
                                                     <td
                                                         {...cell.getCellProps()}

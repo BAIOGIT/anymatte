@@ -67,12 +67,14 @@ class Payment(models.Model):
         return self.uuid
     
     
+## add to model upload a entry for thumbnail image preview
 class Upload(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)    
     file = models.FileField(upload_to='uploads/', max_length=500)
     method = models.CharField(max_length=50, default='', blank=True) # 'text', 'pick', 'human', 'face'
     args = models.JSONField(default=dict, blank=True)
     processed_file = models.FileField(upload_to='processed/', null=True, blank=True, max_length=500)
+    # thumbnail = models.FileField(upload_to='processed/', null=True, blank=True, max_length=500)
     status = models.CharField(max_length=50, default='pending') # 'pending', 'processing', 'done', 'failed'    
     uploaded_at = models.DateTimeField(auto_now_add=True)  # Timestamp when the file is uploaded
     processed_at = models.DateTimeField(null=True, blank=True)  # Timestamp when processing is completed    

@@ -5,7 +5,6 @@ from datetime import datetime
 
 def get_metadata(video_file, metadata_folder):
     try:
-        # Step 1: Analyze video format using FFprobe
         print(f"Storing metadata...")
 
         probe = ffmpeg.probe(video_file)
@@ -18,10 +17,11 @@ def get_metadata(video_file, metadata_folder):
 
         # print(video_stream)
         # print(audio_stream)
+        video_extension = os.path.splitext(base_name)[1]
 
-        # Prepare data to save as JSON
         metadata = {
             "video_name": name_without_extension,
+            "video_extension": video_extension,
             "video_codec": video_stream['codec_name'],
             # "video_codec_long_name": video_stream['codec_long_name'],
             # "video_codec_type": video_stream['codec_type'],

@@ -72,23 +72,23 @@ const Navbar = () => {
 
               <div className="ml-4 flex flex-row items-center space-x-4">   
 
-                <div className="hidden sm:block">
+                <div className="">
                   {/* <a href="/#examples" className=" hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium">Examples</a> */}
                   <button 
-                    className="mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
+                    className="mx-0 sm:mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
                     onClick={handleShowPricing}
                   >          
-                    <a className="px-2">Pricing</a>     
+                    <a className="px-2 sm:px-0">Pricing</a>     
                   </button>
                   <button 
-                    className="mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
+                    className="hidden sm:inline mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
                   >                          
-                    <a href="/#contact" className="px-2">Contact</a>
+                    <a href="/#contact" className="px-2 sm:px-0">Contact</a>
                   </button>
                   <button 
-                    className="mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
+                    className="hidden sm:inline mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
                   >                          
-                    <a href="/#benefits" className="px-2">FAQ</a>
+                    <a href="/#benefits" className="px-2 sm:px-0">FAQ</a>
                   </button>
                   
                 </div> 

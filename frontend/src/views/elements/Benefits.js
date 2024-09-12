@@ -9,7 +9,7 @@ function BenefitsSection() {
   const { title, title1, subtitle1, icon1, title2, subtitle2, icon2, title3, subtitle3, icon3, title4, subtitle4, icon4 } = componentsHeadings.BenefitsSection;
 
   return (
-    <section id='benefits' className="benefits-section text-center pb-20 px-8 md:px-12">
+    <section id='benefits' className="benefits-section text-center py-24 px-8 md:px-12">
       <h2 className="text-3xl md:text-4xl font-bold mb-8">
       {title.split('<br />').map((line, index) => (
                     <span key={index}>

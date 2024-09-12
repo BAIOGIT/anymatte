@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import useAxios from '../../../utils/useAxios';
 import { CloudArrowUpIcon, CloudArrowDownIcon, CheckCircleIcon, XCircleIcon, ForwardIcon, ArrowPathIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
@@ -298,6 +299,10 @@ const VideoUpload = () => {
   };
 
   useEffect(() => {
+    if (uploadStatus === '') {
+      videoRef.current = videoElement;
+      generateThumbnails();        
+    }
     if (uploadStatus === 'pick' && videoRef.current) {
       drawFrameOnCanvas(0, canvasFrameSelectionRef);  // Draw the first frame when entering pick
     }
@@ -322,6 +327,12 @@ const VideoUpload = () => {
     setPoints([]);
   };
   
+  const handleCloseSelection = (event) => {
+    generateThumbnails(); 
+    setUploadStatus('');
+  };
+  
+
   // New function to handle upload after payment success
   const handleUpload = async (args) => {
     // // DEBUG --> console.log(paymentUuid);
@@ -513,7 +524,7 @@ const VideoUpload = () => {
           {uploadStatus === 'selection' && (
             <div className="flex flex-col items-center my-8">
               <button
-                onClick={() => setUploadStatus('')}
+                onClick={() => handleCloseSelection()}
                 className="absolute top-0 right-0 px-3 py-2 mr-2 mt-2 font-medium text-sm bg-lightTheme-primary dark:bg-darkTheme-primary text-black dark:text-white hover:text-white dark:hover:text-black rounded-md hover:bg-darkTheme-primary dark:hover:bg-lightTheme-primary ring-2 ring-black dark:ring-white transition-colors"
                 aria-label="Return"
               >
@@ -573,7 +584,7 @@ const VideoUpload = () => {
               <form onSubmit={handleSubmitText}>
                   <div className="mt-4">
                       <label
-                          className="text-sm font-thin dark:text-gray-200 p-1 mb-2"
+                          className="text-sm text-black dark:text-white p-1 mb-2"
                           htmlFor="form3objects"
                       >
                           Separate each word with comma
@@ -581,7 +592,7 @@ const VideoUpload = () => {
                       <input
                           type="text"
                           id="form3objects"
-                          className="block text-center text-md w-full px-12 py-3 rounded-lg bg-gray-200 focus:outline-none focus:bg-white dark:text-black"
+                          className="block text-center text-md w-full px-12 py-3 rounded-lg bg-gray-200 focus:outline-none focus:bg-white dark:text-black border-[1px] border-black dark:border-white"
                           name="objects"
                           placeholder="What you want to mask?"
                       />
@@ -700,7 +711,7 @@ const VideoUpload = () => {
                 className="pt-6 rounded-lg shadow-md max-w-lg mx-auto transition-colors duration-300"
               >
               <div className="flex items-center justify-between mb-4">
-                <label className="text-lg font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-lg font-medium text-lightTheme-text dark:text-darkTheme-text">
                   Single:
                 </label>
                 <button
@@ -710,13 +721,13 @@ const VideoUpload = () => {
                     humanSettingsSingle
                     ? ''
                     : 'opacity-80'
-                } flex items-center`}
+                } flex items-center border border-black dark:border-white`}
                 >
                   <div
                       className={`w-6 h-6 m-2 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                         humanSettingsSingle
-                        ? 'translate-x-full bg-white'
-                        : 'translate-x-0 bg-white'
+                        ? 'translate-x-full bg-darkTheme-primary dark:bg-lightTheme-primary'
+                        : 'translate-x-0 bg-darkTheme-primary dark:bg-lightTheme-primary'
                     }`}
                   ></div>
                 </button>
@@ -758,7 +769,7 @@ const VideoUpload = () => {
                 className="pt-6 rounded-lg shadow-md max-w-lg mx-auto transition-colors duration-300"
               >
               <div className="flex items-center justify-between mb-4">
-                <label className="text-lg font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-lg font-medium text-lightTheme-text dark:text-darkTheme-text">
                   Single:
                 </label>
                 <button
@@ -768,19 +779,19 @@ const VideoUpload = () => {
                     faceSettingsSingle
                     ? ''
                     : 'opacity-80'
-                } flex items-center`}
+                } flex items-center border border-black dark:border-white`}
                 >
                   <div
                       className={`w-6 h-6 m-2 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                         faceSettingsSingle
-                        ? 'translate-x-full bg-white'
-                        : 'translate-x-0 bg-white'
+                        ? 'translate-x-full bg-darkTheme-primary dark:bg-lightTheme-primary'
+                        : 'translate-x-0 bg-darkTheme-primary dark:bg-lightTheme-primary'
                     }`}
                   ></div>
                 </button>
               </div>
                 <div className="flex items-center justify-between mb-4  dark:bg-darkTheme-primary bg-lightTheme-primary">
-                  <label className="text-lg font-medium text-gray-700 dark:text-gray-300">
+                  <label className="text-lg font-medium text-lightTheme-text dark:text-darkTheme-text">
                     Include neck:
                   </label>
                   <button
@@ -790,13 +801,13 @@ const VideoUpload = () => {
                       faceSettingsNeck
                         ? ''
                         : 'opacity-80'
-                    } flex items-center`}
+                    } flex items-center border border-black dark:border-white`}
                   >
                     <div
                       className={`w-6 h-6 m-2 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                         faceSettingsNeck
-                          ? 'translate-x-full bg-white'
-                          : 'translate-x-0 bg-white'
+                          ? 'translate-x-full bg-darkTheme-primary dark:bg-lightTheme-primary'
+                          : 'translate-x-0 bg-darkTheme-primary dark:bg-lightTheme-primary'
                       }`}
                     ></div>
                   </button>
@@ -833,7 +844,28 @@ const VideoUpload = () => {
               <div className="flex flex-col items-center my-8">
                   <h1 className="text-2xl font-semibold mb-4 text-center">Processing...</h1>
                   <span className="text-lg font-medium text-gray-800 dark:text-gray-300 mb-4 animate-pulse">We are processing the footage...</span>
-                  <ArrowPathIcon className="w-20 h-20 text-gray-400 animate-spin" />
+                  <ArrowPathIcon className="w-20 h-20 text-gray-400 animate-spin mb-4" />
+              
+              {token !== null && (
+                <div>
+                  <div className="text-center flex flex-col items-center mt-2">
+                    <span className="text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">Wait for download link or go to file manager to monitor the progress.</span>
+                    <Link to="/file-manager" className="bg-gradient-to-br from-palette-gradientPrimary to-palette-gradientSecondary hover:from-palette-gradientPrimary hover:to-palette-gradientPrimary mt-2 px-4 py-3 rounded-md text-sm font-medium w-42 text-white mb-2">File Manager</Link>
+                  </div>
+                  <div className="flex flex-col items-center mt-6">
+                      <span className="text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">Need more footages?</span>
+                      <Button 
+                          onClick={resetForm}
+                          className="py-2 px-6"
+                      >
+                          <div className="flex flex-col">
+                              <ForwardIcon className="w-5 h-5 mr-2" />
+                              Upload New Video
+                          </div>
+                      </Button>
+                  </div>
+                </div>
+              )}
               </div>
           )}
           {/* Step 6: Result */}

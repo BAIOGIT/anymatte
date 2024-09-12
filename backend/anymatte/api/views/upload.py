@@ -148,11 +148,11 @@ class UploadView(APIView):
             user_profile = get_object_or_404(UserProfile, user=user)
             if not user_profile.can_upload_file():
                 return Response({"error": "Upload limit reached or subscription required"}, status=status.HTTP_403_FORBIDDEN)
-
-            # Update the uploaded file count            
+    
             if user_profile.trial_uploaded_files_count == user_profile.max_upload_count and user_profile.credits != 0:
                 user_profile.credits -= 1
 
+            # Update the uploaded file count        
             if user_profile.trial_uploaded_files_count <= user_profile.max_upload_count:            
                 user_profile.trial_uploaded_files_count += 1
             else:

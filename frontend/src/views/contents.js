@@ -17,7 +17,7 @@ export const footerHeadings = {
         links: [
             { name: "Upload", href: "#upload" },
             // { name: "Examples", href: "#examples" },
-            { name: "Pricing", href: "#pricing" },
+            { name: "Pricing" },
             { name: "FAQ", href: "#faq" },
             { name: "Contact", href: "#contact" },
             { name: "Privacy Policy", href: "#privacy-policy" },
