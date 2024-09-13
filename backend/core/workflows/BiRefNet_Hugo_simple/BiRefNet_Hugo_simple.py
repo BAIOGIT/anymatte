@@ -21,7 +21,7 @@ def BiRefNet_Hugo_simple(video, processed_path, metadata):
 
     # Set nodes parameters
     load_video_path_node["inputs"]["video"] = video
-    load_video_path_node["inputs"]["frame_load_cap"] = 10
+    load_video_path_node["inputs"]["frame_load_cap"] = 0
 
     export_video_path_node["inputs"]["output_folder"] = processed_path
     export_video_path_node["inputs"]["save_incremental"] = False

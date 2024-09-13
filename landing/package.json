@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@clerk/clerk-react": "^5.4.3",
-    "@ffmpeg/ffmpeg": "^0.12.10",
     "@heroicons/react": "^2.1.5",
     "@react-google-maps/api": "^2.19.3",
     "@tailwindcss/typography": "^0.5.12",

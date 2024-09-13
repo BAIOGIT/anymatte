@@ -44,10 +44,7 @@ const VideoUpload = () => {
   const [selectedFrame, setSelectedFrame] = useState(0); // New state for frame selection
   const [frameCount, setFrameCount] = useState(0); // New state to store the number of frames
   const [currentFrameIndex, setCurrentFrameIndex] = useState(0);  // Track the current frame index
-  const [backgroundImage, setBackgroundImage] = useState(null);
   const [points, setPoints] = useState([]);  // To store the 3 selected points
-  const [draggingPointIndex, setDraggingPointIndex] = useState(null);
-  const [startDragOffset, setStartDragOffset] = useState({ x: 0, y: 0 });
 
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
@@ -65,7 +62,6 @@ const VideoUpload = () => {
       setFileName(file.name);
       const videoUrl = URL.createObjectURL(file);
       setVideoURL(videoUrl);
-      generateThumbnails()
     } else {
       setVideo(null);
       setFileName('');
@@ -128,6 +124,7 @@ const VideoUpload = () => {
 
   const generateThumbnails = () => {
     // DEBUG --> console.log(uploadStatus);
+    
     const videoElement = videoRef.current;
     const canvasElement = canvasThumbnailsRef.current;
     
@@ -225,82 +222,80 @@ const VideoUpload = () => {
   const drawFrameOnCanvas = (frameTime, canvasRef) => {
     const canvasElement = canvasRef.current;
     const ctx = canvasElement?.getContext('2d');  // Optional chaining to ensure ctx is not null
-    
+  
     videoRef.current = videoElement;
-    if (canvasElement && videoElement) {
-      const video = videoElement;
+    if (canvasElement && videoRef.current) {
+      const video = videoRef.current;
       const videoAspectRatio = video.videoWidth / video.videoHeight;
       const canvasAspectRatio = 16 / 9;
   
-      // Set desired canvas size (16:9 ratio)
-      const canvasWidth = 640;  // Example width for 16:9 canvas
-      const canvasHeight = 360; // Example height for 16:9 canvas
+      // Determine canvas size (e.g., 1280x720)
+      const canvasWidth = 640;  // Width for 16:9 aspect ratio
+      const canvasHeight = 360;  // Height for 16:9 aspect ratio
   
       // Set canvas dimensions
       canvasElement.width = canvasWidth;
       canvasElement.height = canvasHeight;
   
-      // Adjust video size and position to fit within the canvas while maintaining the aspect ratio
+      // Adjust video size and position to fit within the canvas
       let drawWidth, drawHeight, offsetX, offsetY;
   
-      if (videoAspectRatio > canvasAspectRatio) {
+      if (video.videoWidth / video.videoHeight > canvasAspectRatio) {
         // Video is wider relative to the canvas
         drawWidth = canvasWidth;
-        drawHeight = canvasWidth / videoAspectRatio;  // Keep the aspect ratio
+        drawHeight = drawWidth / videoAspectRatio;
         offsetX = 0;
-        offsetY = (canvasHeight - drawHeight) / 2;   // Center vertically
+        offsetY = (canvasHeight - drawHeight) / 2;
       } else {
         // Video is taller relative to the canvas
         drawHeight = canvasHeight;
-        drawWidth = canvasHeight * videoAspectRatio; // Keep the aspect ratio
-        offsetX = (canvasWidth - drawWidth) / 2;     // Center horizontally
+        drawWidth = drawHeight * videoAspectRatio;
+        offsetX = (canvasWidth - drawWidth) / 2;
         offsetY = 0;
       }
-  
+      console.log(drawWidth);
+      console.log(drawHeight);
+      
+      
       video.currentTime = frameTime;
-      
       video.onseeked = () => {
-        // Clear canvas before drawing
-        ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);  
-        
-        // Draw the video on the canvas, maintaining aspect ratio and centering
-        ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+        // ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);  // Clear canvas before drawing
+        ctx.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
       };
-      
     } else {
-      console.error("Canvas or video element is null");
+      console.error("Canvas or context is null");
     }
   };
 
   const handleNextFrame = () => {
-    if (videoRef.current) {
-      const totalFrames = videoElement.duration * 30; // Assuming you have a frameRate property
-      const nextFrameIndex = Math.min(currentFrameIndex + 1, totalFrames - 1);
-  
-      setCurrentFrameIndex(nextFrameIndex);
-      console.log('Next Frame Index:', nextFrameIndex);
-      drawFrameOnCanvas(nextFrameIndex, canvasFrameSelectionRef);
+    videoRef.current = videoElement;
+    if (videoRef.current && canvasFrameSelectionRef.current) {
+      
+      const totalFrames = Math.floor(videoRef.current.duration * videoRef.current.frameRate);  // Approximate total frames
+      const nextFrameTime = (currentFrameIndex + 1) / videoRef.current.frameRate;
+      setCurrentFrameIndex(currentFrameIndex + 1);
+      
+      // Ensure video is reloaded and frame is drawn
+      videoRef.current.load();  // Reload the video to make sure it's ready
+      drawFrameOnCanvas(4, canvasFrameSelectionRef);
     }
   };
   
   const handlePreviousFrame = () => {
-    if (videoRef.current) {
-      const prevFrameIndex = Math.max(currentFrameIndex - 1, 0);
-  
-      setCurrentFrameIndex(prevFrameIndex);
-      console.log('Previous Frame Index:', prevFrameIndex);
-      drawFrameOnCanvas(prevFrameIndex, canvasFrameSelectionRef);
+    videoRef.current = videoElement;
+    
+    if (videoRef.current && canvasFrameSelectionRef.current) {
+      const prevFrameTime = (currentFrameIndex - 1) / videoRef.current.frameRate;
+      setCurrentFrameIndex(currentFrameIndex - 1);
+      
+      videoRef.current.load();  // Reload the video to ensure it's ready
+      drawFrameOnCanvas(8, canvasFrameSelectionRef);
     }
-  }; 
+  };  
 
-  const handleCloseFrameSelection = (event) => {
-    setUploadStatus('selection');
-    setCurrentFrameIndex(0);
-  };
-  
   const handleConfirmFrameSelection = async () => {
     setUploadStatus('pick-tab1');  // Proceed to point selection
-    drawFrameOnCanvas(currentFrameIndex, canvasPointsRef);  // Draw the first frame when entering pick-tab1
+    drawFrameOnCanvas(0, canvasPointsRef);  // Draw the first frame when entering pick-tab1
   };
 
   useEffect(() => {
@@ -309,172 +304,32 @@ const VideoUpload = () => {
       generateThumbnails();        
     }
     if (uploadStatus === 'pick' && videoRef.current) {
-      drawFrameOnCanvas(currentFrameIndex, canvasFrameSelectionRef);  // Draw the first frame when entering pick
+      drawFrameOnCanvas(0, canvasFrameSelectionRef);  // Draw the first frame when entering pick
     }
     if (uploadStatus === 'pick-tab1' && videoRef.current) {
-      drawFrameOnCanvas(currentFrameIndex, canvasPointsRef);  // Draw the first frame when entering pick-tab1
+      drawFrameOnCanvas(0, canvasPointsRef);  // Draw the first frame when entering pick-tab1
     }
   }, [uploadStatus]);
   
-  // Function to save the canvas background
-  const saveBackground = () => {
-    const canvasElement = canvasPointsRef.current;
-    const ctx = canvasElement?.getContext('2d');
-    if (ctx) {
-      setBackgroundImage(canvasElement.toDataURL());
-    }
-  };
-
-  // Handle canvas click
   const handleCanvasClick = (event) => {
     const canvasElement = canvasPointsRef.current;
-    const ctx = canvasElement?.getContext('2d');
     const rect = canvasElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-
+  
     if (points.length < 3) {
-      // Save the background if it's not saved yet
-      if (!backgroundImage) {
-        saveBackground();
-      }
-
-      // Add the new point
-      setPoints((prevPoints) => {
-        const newPoints = [...prevPoints, { x, y }];
-        return newPoints;
-      });
+      setPoints([...points, { x, y }]);
     }
   };
-  // Function to redraw all points on the canvas
-  const reDrawPoints = () => {
-    const canvasElement = canvasPointsRef.current;
-    const ctx = canvasElement?.getContext('2d');
-    if (!ctx) return;
-
-    // Clear the canvas and redraw the background
-    ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    if (backgroundImage) {
-      const backgroundImg = new Image();
-      backgroundImg.src = backgroundImage;
-      backgroundImg.onload = () => {
-        ctx.drawImage(backgroundImg, 0, 0);
-        // Draw points on top of the background
-        points.forEach((point, index) => {
-          // Draw the crosshair
-          ctx.beginPath();
-          ctx.strokeStyle = 'red';
-          ctx.lineWidth = 2;
-          ctx.moveTo(point.x - 10, point.y);
-          ctx.lineTo(point.x + 10, point.y);
-          ctx.moveTo(point.x, point.y - 10);
-          ctx.lineTo(point.x, point.y + 10);
-          ctx.stroke();
-
-          // Draw the point ID
-          ctx.font = '16px Arial';
-          ctx.fillStyle = 'red';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(index + 1, point.x - 8, point.y - 8);
-        });
-      };
-    }
-  };
-
-  // Handle removing the last point
-  const handleRemoveLastPoint = () => {
-    if (points.length > 0) {
-      // Remove the last point
-      setPoints((prevPoints) => {
-        const newPoints = prevPoints.slice(0, -1);
-        return newPoints;
-      });
-    }
-  };
-
-  // Handle mouse down to start dragging
-  const handleMouseDown = (event) => {
-    const canvasElement = canvasPointsRef.current;
-    const rect = canvasElement.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    // Find if a point is clicked
-    const index = points.findIndex(point => {
-      return Math.abs(point.x - x) < 10 && Math.abs(point.y - y) < 10;
-    });
-
-    if (index >= 0) {
-      setDraggingPointIndex(index);
-      setStartDragOffset({ x: x - points[index].x, y: y - points[index].y });
-    }
-  };
-
-  // Handle mouse move to drag the point
-  const handleMouseMove = (event) => {
-    if (draggingPointIndex === null) return;
-
-    const canvasElement = canvasPointsRef.current;
-    const rect = canvasElement.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    const newPoints = [...points];
-    newPoints[draggingPointIndex] = {
-      x: x - startDragOffset.x,
-      y: y - startDragOffset.y
-    };
-
-    setPoints(newPoints);
-  };
-
-  // Handle mouse up to stop dragging
-  const handleMouseUp = () => {
-    setDraggingPointIndex(null);
-  };
-
-  // Attach and detach event listeners
-  useEffect(() => {
-    const canvasElement = canvasPointsRef.current;
-
-    if (canvasElement) {
-      canvasElement.addEventListener('mousedown', handleMouseDown);
-      canvasElement.addEventListener('mousemove', handleMouseMove);
-      canvasElement.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      if (canvasElement) {
-        canvasElement.removeEventListener('mousedown', handleMouseDown);
-        canvasElement.removeEventListener('mousemove', handleMouseMove);
-        canvasElement.removeEventListener('mouseup', handleMouseUp);
-      }
-    };
-  }, [handleMouseDown, handleMouseMove, handleMouseUp]);
-
-  useEffect(() => {
-    reDrawPoints();
-  }, [points]);
-
-
+  
   const handleClosePoints = (event) => {
     setUploadStatus('pick');
-    const canvasElement = canvasPointsRef.current;
-    const ctx = canvasElement?.getContext('2d');
-    if (!ctx) return;
-
-    // Clear the canvas and redraw the background
-    setBackgroundImage(null);
-    ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
     setPoints([]);
   };
   
   const handleCloseSelection = (event) => {
     generateThumbnails(); 
     setUploadStatus('');
-    handleRemoveFile(); // Temprrary fix to reset the file input
   };
   
 
@@ -753,7 +608,7 @@ const VideoUpload = () => {
           {uploadStatus === 'pick' && (
             <div className="flex flex-col items-center my-8">
               <button
-                onClick={() => handleCloseFrameSelection()}
+                onClick={() => setUploadStatus('selection')}
                 className="absolute top-0 right-0 px-3 py-2 mr-2 mt-2 font-medium text-sm bg-lightTheme-primary dark:bg-darkTheme-primary text-black dark:text-white hover:text-white dark:hover:text-black rounded-md hover:bg-darkTheme-primary dark:hover:bg-lightTheme-primary ring-2 ring-black dark:ring-white transition-colors"
                 aria-label="Return"
               >
@@ -818,19 +673,13 @@ const VideoUpload = () => {
                   className=" border-[1px] border-lightTheme-separator dark:border-darkTheme-separator cursor-crosshair"
                   onClick={handleCanvasClick}  // Handle canvas click to select points
                 />
-                <button onClick={handleRemoveLastPoint}>Remove Last Point</button>
-                { points.length > 0 && (
-                  <p className="mt-4 font-medium text-md">
-                    Generate a matte for the area matching the selected points:
-                    <br />
-                    {/* {points.map((p, index) => `(${p.x}, ${p.y})`).join(', ')} */}
-                    <p className="font-light text-sm">
-                      {points.map((p, index) => `Point ${index + 1}`).join(', ')}
-                    </p>
-                  </p>
-                )}
+                <p className="mt-4 font-light text-sm">
+                  Selected Points:
+                  <br />
+                  {points.map((p, index) => `(${p.x}, ${p.y})`).join(', ')}
+                </p>
               </div>
-              {points.length > 0 && (
+              {points.length === 3 && (
                 <Button onClick={handleSubmitPoints} className="my-6">
                   Confirm points and Render
                 </Button>
@@ -859,7 +708,7 @@ const VideoUpload = () => {
               <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2 animate-pulse">Select custom settings and proceed to render.</span>
               <form
                 onSubmit={handleSubmitHuman}
-                className="pt-6 rounded-lg max-w-lg mx-auto transition-colors duration-300"
+                className="pt-6 rounded-lg shadow-md max-w-lg mx-auto transition-colors duration-300"
               >
               <div className="flex items-center justify-between mb-4">
                 <label className="text-lg font-medium text-lightTheme-text dark:text-darkTheme-text">
@@ -917,7 +766,7 @@ const VideoUpload = () => {
               <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2 animate-pulse">Select custom settings and proceed to render.</span>
               <form
                 onSubmit={handleSubmitFace}
-                className="pt-6 rounded-lg max-w-lg mx-auto transition-colors duration-300"
+                className="pt-6 rounded-lg shadow-md max-w-lg mx-auto transition-colors duration-300"
               >
               <div className="flex items-center justify-between mb-4">
                 <label className="text-lg font-medium text-lightTheme-text dark:text-darkTheme-text">
