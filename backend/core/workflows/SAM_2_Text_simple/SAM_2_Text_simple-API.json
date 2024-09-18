@@ -1,0 +1,204 @@
+{
+  "66": {
+    "inputs": {
+      "model": "sam2_hiera_base_plus.safetensors",
+      "segmentor": "single_image",
+      "device": "cuda",
+      "precision": "bf16"
+    },
+    "class_type": "DownloadAndLoadSAM2Model",
+    "_meta": {
+      "title": "(Down)Load SAM2Model"
+    }
+  },
+  "88": {
+    "inputs": {
+      "model": "microsoft/Florence-2-large",
+      "precision": "fp16",
+      "attention": "sdpa"
+    },
+    "class_type": "DownloadAndLoadFlorence2Model",
+    "_meta": {
+      "title": "DownloadAndLoadFlorence2Model"
+    }
+  },
+  "105": {
+    "inputs": {
+      "save_output": true,
+      "output_folder": "",
+      "filename_prefix": "ComfyUI_",
+      "save_incremental": true,
+      "frame_rate": [
+        "109",
+        5
+      ],
+      "loop_count": 0,
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "pingpong": false,
+      "images": [
+        "114",
+        0
+      ],
+      "meta_batch": [
+        "115",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine 🎥🅥🅗🅢"
+    }
+  },
+  "109": {
+    "inputs": {
+      "video_info": [
+        "149",
+        3
+      ]
+    },
+    "class_type": "VHS_VideoInfo",
+    "_meta": {
+      "title": "Video Info 🎥🅥🅗🅢"
+    }
+  },
+  "114": {
+    "inputs": {
+      "mask": [
+        "148",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "115": {
+    "inputs": {
+      "frames_per_batch": 1,
+      "count": 177
+    },
+    "class_type": "VHS_BatchManager",
+    "_meta": {
+      "title": "Meta Batch Manager 🎥🅥🅗🅢"
+    }
+  },
+  "116": {
+    "inputs": {
+      "purge_cache": true,
+      "purge_models": true,
+      "anything": [
+        "105",
+        0
+      ]
+    },
+    "class_type": "LayerUtility: PurgeVRAM",
+    "_meta": {
+      "title": "LayerUtility: Purge VRAM"
+    }
+  },
+  "131": {
+    "inputs": {
+      "text_input": [
+        "133",
+        0
+      ],
+      "task": "caption_to_phrase_grounding",
+      "fill_mask": false,
+      "keep_model_loaded": false,
+      "max_new_tokens": 1024,
+      "num_beams": 3,
+      "do_sample": false,
+      "output_mask_select": "",
+      "seed": 1,
+      "image": [
+        "149",
+        0
+      ],
+      "florence2_model": [
+        "88",
+        0
+      ]
+    },
+    "class_type": "Florence2Run",
+    "_meta": {
+      "title": "Florence2Run"
+    }
+  },
+  "133": {
+    "inputs": {
+      "string_1": "skirt",
+      "string_2": "",
+      "string_3": "",
+      "string_4": "",
+      "string_5": "",
+      "string_6": "",
+      "string_7": "",
+      "string_8": "",
+      "delimiter": ", "
+    },
+    "class_type": "List of strings [Crystools]",
+    "_meta": {
+      "title": "🪛 List of strings"
+    }
+  },
+  "138": {
+    "inputs": {
+      "index": "0",
+      "batch": true,
+      "data": [
+        "131",
+        3
+      ]
+    },
+    "class_type": "Florence2toCoordinates",
+    "_meta": {
+      "title": "Florence2 Coordinates"
+    }
+  },
+  "148": {
+    "inputs": {
+      "keep_model_loaded": true,
+      "individual_objects": true,
+      "sam2_model": [
+        "66",
+        0
+      ],
+      "image": [
+        "149",
+        0
+      ],
+      "bboxes": [
+        "138",
+        1
+      ]
+    },
+    "class_type": "Sam2Segmentation",
+    "_meta": {
+      "title": "Sam2Segmentation"
+    }
+  },
+  "149": {
+    "inputs": {
+      "video": "",
+      "force_rate": 0,
+      "force_size": "Disabled",
+      "custom_width": 512,
+      "custom_height": 512,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "meta_batch": [
+        "115",
+        0
+      ]
+    },
+    "class_type": "VHS_LoadVideoPath",
+    "_meta": {
+      "title": "Load Video (Path) 🎥🅥🅗🅢"
+    }
+  }
+}

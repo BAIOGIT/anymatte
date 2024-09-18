@@ -6,8 +6,8 @@ const Button = ({ type = 'button', className = '', children, disabled = false, .
       type={type}
       className={`px-4 py-3 rounded-md font-bold ring-2 ring-black dark:ring-white 
         ${disabled 
-          ? 'bg-lightTheme-primary dark:bg-darkTheme-primary text-black dark:text-white'
-          : 'bg-lightTheme-primary text-black hover:bg-darkTheme-primary hover:text-white dark:bg-darkTheme-primary dark:text-white dark:hover:bg-lightTheme-primary dark:hover:text-black'
+          ? 'bg-lightTheme-primary dark:bg-darkTheme-primary text-lightTheme-text dark:text-darkTheme-text opacity-40'
+          : 'bg-lightTheme-primary text-lightTheme-text hover:bg-darkTheme-primary hover:text-darkTheme-text dark:bg-darkTheme-primary dark:text-darkTheme-text dark:hover:bg-lightTheme-primary dark:hover:text-lightTheme-text'
         } 
         ${className}`}
       disabled={disabled}

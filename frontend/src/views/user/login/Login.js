@@ -92,14 +92,15 @@ function Login() {
             {loginMethod !== 'email' ? (
               <div className="space-y-4 mb-6">
                 <Button 
-                  className="mt-4 bg-gray-200 text-black font-medium py-2 px-6 rounded hover:bg-lightTheme-primary w-full"
+                  className="mt-4 font-medium py-2 px-6 rounded w-full"
                   onClick={() => dispatch(setLoginMethod('email'))}
                 >
                   Sign-in with Email
                 </Button>
                 <Button 
-                  className="mt-4 bg-gray-200 text-black font-medium py-2 px-6 rounded hover:bg-lightTheme-primary w-full"
+                  className="mt-4 font-medium py-2 px-6 rounded w-full"
                   onClick={() => dispatch(setLoginMethod('google'))}
+                  disabled
                 >
                   Continue with Google
                 </Button>
@@ -115,14 +116,15 @@ function Login() {
             {loginMethod !== 'email' ? (
               <div className="space-y-4 mb-6">
                 <Button 
-                  className="mt-4 bg-gray-200 text-black font-medium py-2 px-6 rounded hover:bg-lightTheme-primary w-full"
+                  className="mt-4 font-medium py-2 px-6 rounded w-full"
                   onClick={() => dispatch(setLoginMethod('email'))}
                 >
                   Sign-up with Email
                 </Button>
                 <Button 
-                  className="mt-4 bg-gray-200 text-black font-medium py-2 px-6 rounded hover:bg-lightTheme-primary w-full"
+                  className="mt-4 font-medium py-2 px-6 rounded w-full"
                   onClick={() => dispatch(setLoginMethod('google'))}
+                  disabled
                 >
                   Continue with Google
                 </Button>

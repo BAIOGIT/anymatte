@@ -37,7 +37,7 @@ def process_upload_task(upload_id, method, args_dict):
         # result = subprocess.run([comfyui_script_path, upload_path], capture_output=True, text=True)
 
         if method == 'text': 
-            comfyui_script_path = '../core/workflows/BiRefNet_Hugo_simple/execute.sh'
+            comfyui_script_path = '../core/workflows/SAM_2_Text_simple/execute.sh'
         elif method == 'pick': 
             comfyui_script_path = '../core/workflows/BiRefNet_Hugo_simple/execute.sh'
         elif method == 'human': 
@@ -52,6 +52,7 @@ def process_upload_task(upload_id, method, args_dict):
         logger.info(f'Running celery task for upload ID {upload_id}, using method {method} with args {args_json}')
 
         result = subprocess.run([comfyui_script_path, upload_path, args_json], capture_output=True, text=True)
+        
         if result.returncode != 0:
             raise Exception(f"Script failed with output: {result.stderr}")
 
@@ -85,12 +86,38 @@ def process_upload_task(upload_id, method, args_dict):
             
         #     return None  # Job not found in queue
 
+        def wait_for_file_to_stabilize(file_path, check_interval=10, max_attempts=2):
+            previous_size = -1
+            stable_checks = 0
+
+            while stable_checks < max_attempts:
+                if os.path.exists(file_path):
+                    current_size = os.path.getsize(file_path)
+                    
+                    if current_size == previous_size:
+                        stable_checks += 1
+                    else:
+                        stable_checks = 0  # Reset if the size changes
+                    
+                    previous_size = current_size
+
+                    if stable_checks == max_attempts:
+                        return True
+                    
+                time.sleep(check_interval)
+            
+            return False
+
         while True:
             if os.path.exists(processed_upload_path):
-                upload.processed_file = processed_file_path
-                upload.processed_at = timezone.now()
-                upload.status = 'done'
-                break
+                if wait_for_file_to_stabilize(processed_upload_path):
+                    upload.processed_file = processed_file_path
+                    upload.processed_at = timezone.now()
+                    upload.status = 'done'
+                    break
+                else:
+                    logger.error("File was found but did not stabilize after multiple checks.")
+                    raise Exception("Processed upload file not stable.")
             else:
                 # upload.queue_id = get_job_position(api_url, job_id)
                 # logger.info(f'sleeping for 3 seconds')

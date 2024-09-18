@@ -62,7 +62,7 @@ const CheckUploadPermission = () => {
 
     if (loading) {
         return <div>
-                    <div className='text-md font-bold'>Welcome to Any Matte</div>
+                    <div className='text-md font-bold'>Welcome to AnyMatte</div>
                     {/* <div className='text-sm font-medium'>Consider upgrading your subscription to unlock ulimited removals.</div> */}
                 </div>
         ;
@@ -121,7 +121,7 @@ const CheckUploadPermission = () => {
                 )
             ) : (                
                 <div>
-                    <div className='text-md font-bold'>Welcome to Any Matte</div>
+                    <div className='text-md font-bold'>Welcome to AnyMatte</div>
                     <div className='text-sm font-medium'>Consider upgrading your subscription to unlock ulimited removals.</div>
                 </div>
             )}

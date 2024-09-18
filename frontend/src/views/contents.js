@@ -24,7 +24,7 @@ export const footerHeadings = {
         ],
     },
     copyright: {
-        text: "© 2024 Any Matte. All rights reserved.",
+        text: "© 2024 AnyMatte. All rights reserved.",
         link: {
             href: "https://anymatte.com",
             name: "anymatte.com",
@@ -36,14 +36,14 @@ export const componentsHeadings = {
     HeroSection: {
         // title: "Unmatched Alpha Matte Generation.<br />ANY Image. ANY Format.",
         title: "Unmatched Alpha Matte Generation.",
-        subtitle: "Elevate your post-production with Any Matte. Easily upload any image or video and receive perfectly accurate alpha matte files for faces, vehicles, and more. Streamline your workflow without relying on traditional plugins or complex software setups. Experience seamless integration with your existing editing tools and achieve professional results effortlessly!"
+        subtitle: "Elevate your post-production with AnyMatte. Easily upload any image or video and receive perfectly accurate alpha matte files for faces, vehicles, and more. Streamline your workflow without relying on traditional plugins or complex software setups. Experience seamless integration with your existing editing tools and achieve professional results effortlessly!"
     },
     UVPSection: {
         title: "The Premier Solution for Perfect Alpha Mattes",
-        subtitle: "Any Matte is your go-to platform for generating flawless alpha matte files. Unlike conventional plugins or complicated software, our service is designed to provide precise results for faces, vehicles, and other elements in any footage. Whether you're facing tight deadlines or managing ongoing projects, we ensure that your alpha mattes are ready to integrate seamlessly into your workflow."
+        subtitle: "AnyMatte is your go-to platform for generating flawless alpha matte files. Unlike conventional plugins or complicated software, our service is designed to provide precise results for faces, vehicles, and other elements in any footage. Whether you're facing tight deadlines or managing ongoing projects, we ensure that your alpha mattes are ready to integrate seamlessly into your workflow."
     },
     BenefitsSection: {
-        title: "Why Choose Any Matte?",
+        title: "Why Choose AnyMatte?",
         icon1: "fas fa-image",
         title1: "Comprehensive Matte Creation",
         subtitle1: "Specializing in various types of footage, we deliver accurate alpha mattes tailored to your needs, from faces to vehicles and beyond.",
@@ -75,9 +75,9 @@ export const componentsHeadings = {
     SocialProofSection: {
         title: "Hear from Our Satisfied Clients",
         testimonials: [
-            { name: 'Alex Johnson', role: 'Video Editor', content: 'Any Matte has revolutionized my workflow. The alpha mattes are incredibly accurate and save me hours of manual work.' },
+            { name: 'Alex Johnson', role: 'Video Editor', content: 'AnyMatte has revolutionized my workflow. The alpha mattes are incredibly accurate and save me hours of manual work.' },
             { name: 'Samantha Lee', role: 'VFX Artist', content: 'A game-changer for my projects. The quality and speed of their service are unmatched.' },
-            { name: 'David Carter', role: 'Freelancer', content: 'Effortless and reliable. Any Matte delivers exactly what I need, every time.' },
+            { name: 'David Carter', role: 'Freelancer', content: 'Effortless and reliable. AnyMatte delivers exactly what I need, every time.' },
         ]
     },
     CallToActionSection: {

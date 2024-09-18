@@ -205,14 +205,19 @@ const VideoUpload = () => {
       return;
     }
   
-    // Open the payment popup first
-    if ( !token ) {
-      openPopup();
-    } else {
-      setUploadStatus('selection');
+    // Uncomment for login processing
+    // // Open the payment popup first
+    // if ( !token ) {
+    //   openPopup();
+    // } else {
+    //   setUploadStatus('selection');
       
-      // handleUpload(); // Call the success handler or any other logic
-    }
+    //   // handleUpload(); // Call the success handler or any other logic
+    // }
+  
+    // Comment for login processing
+    setUploadStatus('selection');
+
   };
   
   // Handle option selection
@@ -658,9 +663,10 @@ const VideoUpload = () => {
 
                 </form>
 
-                {!token && isPopupOpen && (
+                {/* Uncomment for login processing */}
+                {/* {!token && isPopupOpen && (
                   <StripePopupTrigger reason='generation' mode='payment' price_id='price_1Pv64fJ0wDsD9vPNMbmj3Kn9' quantity='1' onPaymentSuccess={handleUpload} onClose={closePopup} />
-                )}
+                )} */}
 
               </div>
             </div>
@@ -724,16 +730,16 @@ const VideoUpload = () => {
                       </div>
                   </>
               )}
-              <h2 className="my-6 text-2xl font-semibold mb-2">Describe your items</h2>
-              <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2 animate-pulse">Type the name of the items you want to mask and proceed to render.</span>
+              <h2 className="my-6 text-2xl font-semibold mb-2">Describe your item</h2>
+              <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2 animate-pulse">Type the name of the object you want to mask and proceed to render.</span>
               <form onSubmit={handleSubmitText}>
                   <div className="mt-4">
-                      <label
+                      {/* <label
                           className="text-sm text-black dark:text-white p-1 mb-2"
                           htmlFor="form3objects"
                       >
                           Separate each word with comma
-                      </label>
+                      </label> */}
                       <input
                           type="text"
                           id="form3objects"
@@ -808,7 +814,7 @@ const VideoUpload = () => {
                       </div>
                   </>
               )}
-              <h1 className="text-2xl font-semibold text-center mt-6">Select 3 Points on the Frame</h1>
+              <h1 className="text-2xl font-semibold text-center mt-6">Select maximum 3 points</h1>
               <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2 animate-pulse">Select points in the frame and proceed to render.</span>
               <div className="mt-4 flex flex-col items-center align-middle text-center">
                 <canvas
@@ -818,16 +824,21 @@ const VideoUpload = () => {
                   className=" border-[1px] border-lightTheme-separator dark:border-darkTheme-separator cursor-crosshair"
                   onClick={handleCanvasClick}  // Handle canvas click to select points
                 />
-                <button onClick={handleRemoveLastPoint}>Remove Last Point</button>
                 { points.length > 0 && (
-                  <p className="mt-4 font-medium text-md">
-                    Generate a matte for the area matching the selected points:
-                    <br />
-                    {/* {points.map((p, index) => `(${p.x}, ${p.y})`).join(', ')} */}
-                    <p className="font-light text-sm">
-                      {points.map((p, index) => `Point ${index + 1}`).join(', ')}
+                  <div className="flex flex-col items-center ">
+                    <button className="px-3 py-2 mr-2 mt-2 font-medium text-sm bg-lightTheme-primary dark:bg-darkTheme-primary text-black dark:text-white hover:text-white dark:hover:text-black rounded-md hover:bg-darkTheme-primary dark:hover:bg-lightTheme-primary ring-2 ring-black dark:ring-white transition-colors"
+                    onClick={handleRemoveLastPoint}>
+                    Remove Last Point
+                    </button>
+                    <p className="mt-4 font-medium text-md">
+                      Generate a matte for the area matching the selected points:
+                      <br />
+                      {/* {points.map((p, index) => `(${p.x}, ${p.y})`).join(', ')} */}
+                      <p className="font-light text-sm">
+                        {points.map((p, index) => `Point ${index + 1}`).join(', ')}
+                      </p>
                     </p>
-                  </p>
+                  </div>
                 )}
               </div>
               {points.length > 0 && (
@@ -997,7 +1008,7 @@ const VideoUpload = () => {
                   <span className="text-lg font-medium text-gray-800 dark:text-gray-300 mb-4 animate-pulse">We are processing the footage...</span>
                   <ArrowPathIcon className="w-20 h-20 text-gray-400 animate-spin mb-4" />
               
-              {token !== null && (
+              {token !== null ? (
                 <div>
                   <div className="text-center flex flex-col items-center mt-2">
                     <span className="text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">Wait for download link or go to file manager to monitor the progress.</span>
@@ -1014,6 +1025,16 @@ const VideoUpload = () => {
                               Upload New Video
                           </div>
                       </Button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="text-center flex flex-col items-center mt-2">
+                    <span className="text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">Wait for download link.</span>
+                  </div>
+                  <div className="flex flex-col items-center mt-6">
+                      <span className="text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">Consider login to unlock full project management.</span>
+                      <Link className="bg-gradient-to-br from-palette-gradientPrimary to-palette-gradientSecondary hover:from-palette-gradientPrimary hover:to-palette-gradientPrimary mt-2 px-4 py-3 rounded-md text-sm font-medium w-42 text-white mb-2">File Manager</Link>
                   </div>
                 </div>
               )}

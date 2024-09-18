@@ -64,7 +64,7 @@ const Navbar = () => {
             <div className="flex-shrink-0 flex items-center">
               
               <Link to="/">
-                <img className="h-8 w-auto" src="/logo_navbar.png" alt="Logo" />
+                <img className="h-8 w-auto" src="/favicon.ico" alt="Logo" />
               </Link>
 
             </div>  
@@ -74,17 +74,22 @@ const Navbar = () => {
 
                 <div className="">
                   {/* <a href="/#examples" className=" hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium">Examples</a> */}
-                  <button 
+                  
+
+                  {/* Uncomment for pricing button */}
+                  {/* <button 
                     className="mx-0 sm:mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
                     onClick={handleShowPricing}
                   >          
                     <a className="px-2 sm:px-0">Pricing</a>     
-                  </button>
+                  </button> */}
+                  
                   <button 
                     className="hidden sm:inline mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
                   >                          
                     <a href="/#contact" className="px-2 sm:px-0">Contact</a>
                   </button>
+                  
                   <button 
                     className="hidden sm:inline mx-1 hover:bg-gradient-to-br hover:from-palette-gradientPrimary hover:to-palette-gradientSecondary hover:text-white px-3 py-3 rounded-md text-sm font-medium"
                   >                          

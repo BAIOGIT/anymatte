@@ -4,33 +4,30 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 import json
 
 from modules.create_folder import *
-from modules.get_metadata import *
+# from modules.get_metadata import *
 from modules.run_comfyui_workflow import *
 from modules.purge_vram import *
 
 url = "http://127.0.0.1:8188"
 
-def BiRefNet_Hugo_simple(video, processed_path, metadata):
+def SAM_2_Text_simple(video, processed_path, args_json):
     # Load workflow api json file
-    workflow = '/home/swell/git/msaas/anymatte/backend/core/workflows/BiRefNet_Hugo_simple/BiRefNet_Hugo_simple-API.json'
+    workflow = '/home/swell/git/msaas/anymatte/backend/core/workflows/SAM_2_Text_simple/SAM_2_Text_simple-API.json'
     workflow = json.load(open(workflow))
-
+    
     # Define nodes
-    load_video_path_node = workflow["16"]
-    export_video_path_node = workflow["15"]
+    load_video_path_node = workflow["149"]
+    list_of_strings_node = workflow["133"]
+    export_video_path_node = workflow["105"]
 
     # Set nodes parameters
     load_video_path_node["inputs"]["video"] = video
-    load_video_path_node["inputs"]["frame_load_cap"] = 5
+    load_video_path_node["inputs"]["frame_load_cap"] = 15
+
+    list_of_strings_node["inputs"]["string_1"] = args_json["text"]
 
     export_video_path_node["inputs"]["output_folder"] = processed_path
     export_video_path_node["inputs"]["save_incremental"] = False
-
-    # if metadata["video_framerate"] != None:
-    #     export_video_path_node["inputs"]["frame_rate"] = metadata["video_framerate"]
-    # else:
-    #     print("Frame rate not found in metadata. Using default value of 30.")
-    #     export_video_path_node["inputs"]["frame_rate"] = 30
 
     base_name = os.path.basename(video)
     name_without_extension = os.path.splitext(base_name)[0]
@@ -42,9 +39,10 @@ def main(video_path):
     try:
         processed_path = '/home/swell/git/msaas/anymatte/backend/anymatte/media/processed'
         folder_path = create_folder(video_path, processed_path)
-        metadata = get_metadata(video_path, folder_path)
+        # metadata = get_metadata(video_path, folder_path)
         
-        workflow = BiRefNet_Hugo_simple(video_path, folder_path, metadata)
+        args_json = json.loads(sys.argv[2])
+        workflow = SAM_2_Text_simple(video_path, folder_path, args_json)
 
         queue_workflow(url, workflow, folder_path)
     except Exception as e:
@@ -52,7 +50,7 @@ def main(video_path):
     
     clear_memory(url)
 
-    return
+    return True
 
 if __name__ == '__main__':
     main(sys.argv[1])
