@@ -1007,6 +1007,8 @@ const VideoUpload = () => {
                   <h1 className="text-2xl font-semibold mb-4 text-center">Processing...</h1>
                   <span className="text-lg font-medium text-gray-800 dark:text-gray-300 mb-4 animate-pulse">We are processing the footage...</span>
                   <ArrowPathIcon className="w-20 h-20 text-gray-400 animate-spin mb-4" />
+
+                  <span className="text-lg font-medium text-gray-800 dark:text-gray-300 mb-4 animate-pulse">Loading preview..</span>
               
               {token !== null ? (
                 <div>
